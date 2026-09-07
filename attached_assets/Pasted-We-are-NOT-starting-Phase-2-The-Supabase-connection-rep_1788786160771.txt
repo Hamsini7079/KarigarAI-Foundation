@@ -1,0 +1,128 @@
+We are NOT starting Phase 2.
+
+The Supabase connection report shows that the current KarigarAI schema exists only in the local PostgreSQL database, while the connected Supabase database is empty.
+
+Before making any changes, I want you to PLAN the migration and security foundation.
+
+Do NOT execute migrations yet.
+
+Do NOT delete or modify the existing local database.
+
+Do NOT implement authentication or RBAC yet.
+
+Do NOT create fake/local authentication.
+
+Inspect the current Drizzle schema, database configuration, seed data, application queries, and Supabase connection.
+
+Prepare a detailed migration plan for moving the KarigarAI database foundation from the current local PostgreSQL database to Supabase.
+
+The plan must address:
+
+1. How each existing table maps to Supabase:
+- profiles
+- user_roles
+- artisans
+- categories
+- products
+- product_images
+- pricing_recommendations
+- inquiries
+- inquiry_messages
+- market_reference_prices
+- notifications
+- analytics_events
+- ai_processing_logs
+
+2. Primary keys and foreign keys.
+
+3. How profiles.id should map to Supabase auth.users.id.
+
+4. Which tables contain public data and which contain private data.
+
+5. Which fields need constraints/checks/enums.
+
+6. Which fields need indexes.
+
+7. How the existing demo data should be handled.
+
+8. Whether existing local seed data should be migrated to Supabase or recreated there.
+
+9. Required Supabase Storage buckets and what each bucket is for.
+
+10. Proposed RLS policies for:
+- profiles
+- user_roles
+- artisans
+- products
+- product_images
+- pricing_recommendations
+- inquiries
+- inquiry_messages
+- notifications
+- analytics_processing/internal logs
+
+11. Public marketplace access:
+Define exactly which product/category information can be read anonymously.
+
+12. Artisan ownership:
+Explain how the system will ensure an artisan can only modify their own products/images.
+
+13. Buyer privacy:
+Ensure buyer contact information and private inquiries are not publicly readable.
+
+14. Admin access:
+Explain how administrator access will be enforced safely.
+
+15. Environment variable cleanup:
+The report says VITE_SUPABASE_SERVICE_ROLE_KEY exists.
+
+Propose the safest configuration:
+- browser-safe Supabase client variables
+- server-only privileged variables
+
+Do not expose a service-role/secret key to client-side code.
+
+16. Migration strategy:
+Explain how to migrate without breaking the existing application.
+
+17. Rollback strategy:
+Explain how to recover if migration fails.
+
+18. Verification plan:
+Explain how we will verify:
+- schema
+- foreign keys
+- data
+- storage
+- RLS
+- anonymous access
+- artisan access
+- buyer access
+- admin access
+
+19. Identify any conflicts between the current Drizzle/PostgreSQL architecture and Supabase.
+
+20. Identify files that will need to change.
+
+IMPORTANT:
+Do not make code changes yet.
+
+At the end provide:
+
+SUPABASE MIGRATION PLAN
+
+A. Current architecture
+B. Target architecture
+C. Table-by-table migration plan
+D. Identity mapping
+E. Storage plan
+F. RLS/security plan
+G. Environment variable plan
+H. Data/seed plan
+I. Files affected
+J. Risks
+K. Rollback plan
+L. Verification plan
+M. Recommended implementation order
+
+Do not proceed to implementation until this plan is reviewed.
