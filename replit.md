@@ -1,6 +1,6 @@
-# [Project name]
+# KarigarAI
 
-_Replace the heading above with the project's name, and this line with one sentence describing what this app does for users._
+KarigarAI is a mobile-first business manager that helps Indian artisans prepare their work for buyer discovery.
 
 ## Run & Operate
 
@@ -9,7 +9,8 @@ _Replace the heading above with the project's name, and this line with one sente
 - `pnpm run build` — typecheck + build all packages
 - `pnpm --filter @workspace/api-spec run codegen` — regenerate API hooks and Zod schemas from the OpenAPI spec
 - `pnpm --filter @workspace/db run push` — push DB schema changes (dev only)
-- Required env: `DATABASE_URL` — Postgres connection string
+- Required env: `DATABASE_URL` — preconfigured PostgreSQL connection string
+- Copy `.env.example` when configuring external Supabase Auth/Storage and AI adapters
 
 ## Stack
 
@@ -19,18 +20,30 @@ _Replace the heading above with the project's name, and this line with one sente
 - Validation: Zod (`zod/v4`), `drizzle-zod`
 - API codegen: Orval (from OpenAPI spec)
 - Build: esbuild (CJS bundle)
+- Frontend: React + Vite, Wouter, Tailwind CSS, Lucide icons
 
 ## Where things live
 
-_Populate as you build — short repo map plus pointers to the source-of-truth file for DB schema, API contracts, theme files, etc._
+- `artifacts/karigarai` — runnable web app and shared visual language
+- `artifacts/api-server` — Express API routes and deterministic demo seed
+- `lib/api-spec/openapi.yaml` — source of truth for API contracts
+- `lib/api-client-react` — generated React Query client
+- `lib/api-zod` — generated server validation schemas
+- `lib/db/src/schema/karigarai.ts` — Phase 1 PostgreSQL schema
 
 ## Architecture decisions
 
-_Populate as you build — non-obvious choices a reader couldn't infer from the code (3-5 bullets)._
+- Phase 1 uses a real PostgreSQL-backed foundation with deterministic demo data; external AI capabilities are mock-ready.
+- API contracts are OpenAPI-first; generated clients and Zod schemas are never hand-edited.
+- The seeded artisan is fictional Savitri Devi, and the six demo products are clearly demonstration data.
+- Supabase Auth/Storage names and environment variables are configuration-ready but are not silently replaced with local authentication.
 
 ## Product
 
-_Describe the high-level user-facing capabilities of this app once they exist._
+- Public welcome and mission surfaces
+- Deterministic demo entry for an artisan foundation dashboard
+- Buyer marketplace foundation with search and category filtering
+- Foundation status showing roles, supported languages, storage areas, and provider mode
 
 ## User preferences
 
@@ -38,7 +51,9 @@ _Populate as you build — explicit user instructions worth remembering across s
 
 ## Gotchas
 
-_Populate as you build — sharp edges, "always run X before Y" rules._
+- After editing `lib/api-spec/openapi.yaml`, run `pnpm --filter @workspace/api-spec run codegen`.
+- Start/restart managed API and web workflows rather than root-level dev commands.
+- Do not begin the photo/voice/catalog/pricing golden flow until Phase 2 is explicitly requested.
 
 ## Pointers
 

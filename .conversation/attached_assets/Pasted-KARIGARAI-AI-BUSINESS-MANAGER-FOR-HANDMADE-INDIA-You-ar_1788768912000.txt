@@ -1,0 +1,1512 @@
+KARIGARAI — AI BUSINESS MANAGER FOR
+HANDMADE INDIA
+You are the senior software architect, full-stack engineer, AI integration engineer, database engineer,
+security engineer, UX engineer, QA engineer, and long-term maintainer of this project.
+Build a hackathon-ready application with production-quality engineering practices for:
+Smart India Hackathon 2026 — Problem
+Statement SIH26090
+“AI-Driven Market Linkage and Smart Cataloging Mobile Application for Marginalized Artisans.”
+The application is called:
+KARIGARAI
+“Your AI Business Manager for Handmade India”
+The application helps marginalized artisans, weavers, handicraft makers, and micro-entrepreneurs digitize
+their products and connect with B2B buyers with minimal technical knowledge.
+The system must NOT look like a generic e-commerce website.
+The artisan experience must be:
+mobile-first
+simple
+icon-driven
+voice-friendly
+multilingual
+accessible to low-digital-literacy users
+============================================================
+0. REPLIT AGENT EXECUTION PROTOCOL — VERY
+IMPORTANT
+============================================================
+•
+•
+•
+•
+•
+•
+1
+This is a multi-phase project.
+DO NOT attempt to implement the entire application in one uncontrolled pass.
+Work sequentially.
+PHASE 1 — FOUNDATION
+Start with Phase 1 only.
+Phase 1 includes:
+project initialization
+TanStack Start
+React
+TypeScript
+Tailwind CSS
+shadcn/ui
+routing foundation
+shared design system
+Supabase connection
+authentication foundation
+user roles
+PostgreSQL schema
+migrations
+Row Level Security
+repository/data-access layer
+storage foundation
+internationalization foundation
+shared layouts/navigation
+demo/seed data foundation
+Do NOT implement the complete AI product wizard, marketplace, pricing engine, or advanced admin
+features in Phase 1 unless a small dependency is required.
+After Phase 1:
+Run the application.
+Verify that it builds successfully.
+Verify the route structure.
+Verify authentication.
+Verify role-based authorization.
+Verify database connectivity.
+Verify migrations.
+Verify RLS policies.
+Verify storage foundation.
+Verify seed/demo data.
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+1.
+2.
+3.
+4.
+5.
+6.
+7.
+8.
+9.
+10.
+2
+Check TypeScript errors.
+Check broken imports.
+Check console/runtime errors.
+Summarize files/modules created or modified.
+Summarize database changes.
+Summarize known limitations.
+Then STOP.
+Do NOT automatically start Phase 2.
+PHASE 2 — ARTISAN GOLDEN FLOW
+Only continue when explicitly instructed.
+Implement:
+Photo → Enhance → Voice → Transcript → Catalog → Price → Review → Publish
+After implementation:
+run the application
+test every step
+test failure states
+test manual fallbacks
+test mock AI providers
+test persistence
+test mobile responsiveness
+Then STOP.
+PHASE 3 — MARKETPLACE
+Only continue when explicitly instructed.
+Implement:
+Buyer marketplace → Search → Filters → Product details → Artisan story → B2B inquiry → Threaded
+messages → Notifications → Artisan response
+Then test the complete marketplace/inquiry flow and STOP.
+11.
+12.
+13.
+14.
+15.
+16.
+•
+•
+•
+•
+•
+•
+•
+3
+PHASE 4 — DEMO + POLISH
+Only continue when explicitly instructed.
+Implement:
+Demo Mode
+Admin dashboard
+PWA
+Offline drafts
+accessibility improvements
+performance optimization
+complete test suite
+documentation
+SIH demo polish
+Then execute the complete end-to-end acceptance test.
+GENERAL EXECUTION RULES
+For every phase:
+Analyze → Identify affected modules → Implement → Test → Verify → Summarize → STOP
+Do not silently skip a phase.
+Do not change the agreed architecture without explaining why.
+Do not introduce unnecessary technologies.
+Do not replace the database/framework without explicit approval.
+Do not add features outside scope just because they are common in e-commerce applications.
+If a small architectural decision is necessary and does not materially alter the product, choose the safest
+maintainable option and document it.
+============================================================
+1. NON-NEGOTIABLE ENGINEERING PRINCIPLES
+============================================================
+Act as a long-term maintainer.
+•
+•
+•
+•
+•
+•
+•
+•
+•
+4
+Before changing existing functionality:
+inspect the relevant architecture
+identify affected files/modules
+inspect dependencies
+understand current behavior
+consider regression risk
+Never:
+duplicate business logic
+put SQL inside UI components
+put AI-provider SDK calls inside UI components
+expose secrets in frontend code
+invent APIs
+invent datasets
+invent government integrations
+silently overwrite user content
+delete original product images
+falsely claim mock AI is production AI
+falsely claim the pricing engine is a trained ML model
+generate unsupported artisan/product facts
+Prefer:
+modular services
+reusable components
+typed interfaces
+repository pattern
+Zod validation
+testable logic
+small modules
+consistent naming
+explicit error handling
+provider-independent architecture
+============================================================
+2. CORE PRODUCT VISION
+============================================================
+The most important experience is:
+ARTISAN
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+5
+→ Take/upload product photo → AI Image Studio → Speak product details in regional language → Speechto-text → AI product understanding → English + Hindi catalog → AI-assisted price estimate → Artisan
+reviews and edits → Publish → Buyer discovers product → Buyer sends B2B inquiry → Artisan responds
+This is the GOLDEN FLOW.
+The product should make the following idea immediately understandable:
+“Take a photo. Speak. AI does the hard work.
+Review. Sell.”
+============================================================
+3. TECHNOLOGY STACK
+============================================================
+Use:
+Frontend:
+TanStack Start
+React
+TypeScript
+Tailwind CSS
+shadcn/ui
+Lucide icons
+Backend:
+TanStack Start server functions/API routes
+server-side application services
+Database:
+PostgreSQL using Supabase
+Authentication:
+Supabase Auth
+Storage:
+Supabase Storage
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+6
+Validation:
+Zod
+Server state:
+TanStack Query where useful
+PWA:
+web app manifest
+service worker
+installable experience
+offline draft persistence
+Deployment:
+Replit-compatible deployment
+Supabase as external backend
+IMPORTANT:
+Do NOT use Lovable Cloud.
+Do NOT tightly couple application logic to Replit.
+Business logic must remain portable.
+============================================================
+4. HIGH-LEVEL ARCHITECTURE
+============================================================
+Use:
+UI ↓ TanStack Start route/component ↓ Server function/API ↓ Application service ↓ Repository / provider
+↓ Database / AI / Storage
+UI must never directly:
+execute SQL
+access repositories
+call AI vendor SDKs
+contain business rules
+Suggested structure:
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+7
+src/ routes/ components/ artisan/ buyer/ admin/ ai/ shared/ lib/ ai/ repositories/ validation/ auth/ i18n/
+storage/ marketplace/ utils/ services/ speech/ translation/ catalog/ pricing/ image-enhancement/ hooks/
+types/ tests/ data/
+Keep vendor-specific logic isolated in adapters.
+============================================================
+5. USER ROLES
+============================================================
+Support:
+ARTISAN BUYER ADMIN
+Use a dedicated role structure.
+Preferred:
+profiles user_roles
+Do not use the profile row as the sole authoritative source of roles.
+All sensitive authorization must be verified server-side.
+ARTISAN:
+onboarding
+dashboard
+create product
+take/upload photo
+AI image enhancement
+voice description
+multilingual catalog
+pricing estimate
+review/edit
+publish
+inventory
+product management
+craft story
+inquiries
+notifications
+profile/settings
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+8
+BUYER:
+marketplace
+search
+filtering
+product details
+artisan story
+B2B inquiry
+inquiry history
+profile
+ADMIN:
+dashboard
+artisans
+buyers
+products
+inquiries
+categories
+reports
+analytics
+============================================================
+6. ROUTES
+============================================================
+PUBLIC:
+/ /about /marketplace /product/$id /login /signup /demo
+ARTISAN:
+/artisan /artisan/onboarding /artisan/products /artisan/products/new /artisan/products/new/photo /
+artisan/products/new/enhance /artisan/products/new/voice /artisan/products/new/catalog /artisan/
+products/new/pricing /artisan/products/new/review /artisan/products/$id /artisan/inquiries /artisan/
+inquiries/$id /artisan/story /artisan/profile /artisan/settings
+BUYER:
+/buyer /buyer/marketplace /buyer/product/$id /buyer/inquiries /buyer/inquiries/$id /buyer/profile
+ADMIN:
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+9
+/admin /admin/artisans /admin/buyers /admin/products /admin/inquiries /admin/categories /admin/
+reports /admin/analytics
+Use authenticated layouts and server-side role protection.
+============================================================
+7. DATABASE SCHEMA
+============================================================
+Create migrations for:
+profiles user_roles artisans products product_images pricing_recommendations inquiries inquiry_messages
+categories market_reference_prices notifications analytics_events ai_processing_logs
+Relationships:
+profiles 1:1 artisans
+profiles 1:n user_roles
+artisans 1:n products
+products 1:n product_images
+products 1:n pricing_recommendations
+products 1:n inquiries
+inquiries 1:n inquiry_messages
+Create appropriate:
+primary keys
+foreign keys
+constraints
+indexes
+timestamps
+============================================================
+•
+•
+•
+•
+•
+10
+8. ROW LEVEL SECURITY
+============================================================
+Implement RLS.
+Public marketplace users may access only fields intended for published product display.
+Protect:
+drafts
+private artisan data
+buyer contact details
+inquiries
+inquiry messages
+notifications
+internal AI logs
+Artisans may access only their authorized records.
+Buyers may access only their private inquiry information.
+Administrators must be authorized separately.
+Buyer personal data must NEVER be exposed through public product/marketplace queries.
+============================================================
+9. STORAGE
+============================================================
+Use Supabase Storage.
+Separate storage areas logically for:
+original product images
+enhanced product images
+artisan profile photos
+optional audio recordings
+Validate:
+MIME type
+size
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+11
+extension
+Keep the original product image permanently available for the product.
+============================================================
+10. AI SERVICE ARCHITECTURE
+============================================================
+Create provider-independent interfaces:
+SpeechProvider TranslationProvider CatalogProvider PricingProvider ImageEnhancementProvider
+Each service should support:
+Real provider Mock provider
+All AI access occurs server-side.
+Suggested service boundaries:
+/services/speech /services/translation /services/catalog /services/pricing /services/image-enhancement
+Provider-specific SDK calls must exist ONLY inside provider adapters.
+============================================================
+11. AI IMAGE STUDIO
+============================================================
+This is a flagship SIH feature.
+The system must enhance the artisan's ORIGINAL product photograph.
+NEVER:
+recreate the product
+redraw the product
+replace the product
+reimagine the product
+use text-to-image generation to create a new product
+•
+•
+•
+•
+•
+•
+12
+Preserve:
+product identity
+shape
+structure
+patterns
+texture
+actual color
+embroidery
+logos
+markings
+distinctive physical characteristics
+Prefer NON-GENERATIVE processing:
+background removal
+lighting/exposure correction
+white balance
+color correction
+contrast
+sharpening
+noise reduction
+cropping
+centering
+resizing
+e-commerce aspect ratio
+If a generative image-editing provider is ever used:
+use image-edit mode only
+use the original image as source
+do not use text-to-image generation
+preserve the source product
+show before/after
+require artisan approval
+Always retain:
+original_image enhanced_image
+Never overwrite the original.
+Allow:
+Accept Reject Retry Revert to Original
+The mock image enhancer must transform the uploaded image itself.
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+13
+============================================================
+12. VOICE INPUT
+============================================================
+Initial voice languages:
+Hindi Telugu English
+The artisan should see:
+ Tell us about your product
+Pipeline:
+Voice recording → audio → speech-to-text → transcript → editable transcript
+Typing is always available as fallback.
+Required states:
+Idle Recording Processing Success Failure Retry
+Provider:
+SpeechProvider
+Implement:
+RealSpeechProvider MockSpeechProvider
+Conceptual server function:
+transcribe(audioUrl, language)
+Response:
+{ text, language, confidence }
+============================================================
+14
+13. MULTILINGUAL SYSTEM
+============================================================
+Initial UI languages:
+English Hindi Telugu
+Create centralized i18n resources:
+en.json hi.json te.json
+All major UI strings must support these languages.
+Do not hard-code UI text unnecessarily.
+Language switcher must work across the application.
+Catalog output:
+English + Hindi
+Voice input:
+English + Hindi + Telugu
+Architecture must make future Indian languages easy to add.
+============================================================
+14. AI CATALOG GENERATION
+============================================================
+Input:
+enhanced image
+transcript
+source language
+selected category
+available metadata
+Generate:
+•
+•
+•
+•
+•
+15
+English title Hindi title English description Hindi description Short description Category Material Color Size
+Dimensions Craft technique Region Care instructions SEO/search keywords
+All fields must be editable.
+Display:
+“AI generated this from your description. Please review before publishing.”
+============================================================
+15. AI FACTUALITY RULES
+============================================================
+The catalog AI must NEVER invent:
+material
+dimensions
+origin
+cultural significance
+certifications
+artisan history
+product properties
+unsupported manufacturing claims
+Use only:
+artisan-provided information
+selected category
+verified metadata
+safe visual observations
+Unknown fields must:
+remain blank OR
+be explicitly marked “Needs confirmation”
+Require artisan review before publication.
+============================================================
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+16
+16. SMART PRICING
+============================================================
+Create:
+PricingProvider
+Initial implementation:
+TransparentPricingProvider
+It may use:
+material cost
+labor hours
+quantity
+craft complexity
+category
+craft
+region
+product attributes
+seeded market-reference data
+configurable pricing factors
+Output:
+recommended price minimum suggested price maximum suggested price confidence readable reasoning
+UI label:
+“AI-assisted price estimate”
+IMPORTANT:
+The initial transparent pricing engine is NOT a trained machine-learning model.
+Do not describe it as one in:
+code
+documentation
+UI
+presentation
+Create a future:
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+17
+MLPricingProvider
+that can replace the transparent engine without changing the UI.
+============================================================
+17. MARKET REFERENCE DATA
+============================================================
+Create:
+market_reference_prices
+Fields:
+category craft material region unit reference_price source_label updated_at
+Seed clearly labeled demonstration/reference data.
+Do not claim the data is official government data unless an actual verified source is connected.
+============================================================
+18. ARTISAN PRODUCT CREATION WIZARD
+============================================================
+Six stages:
+PHOTO
+ENHANCE
+SPEAK
+CATALOG
+PRICE
+REVIEW
+Show visual progress.
+One major task per screen.
+============================================================
+1.
+2.
+3.
+4.
+5.
+6.
+18
+19. PHOTO SCREEN
+============================================================
+Route:
+/artisan/products/new/photo
+Features:
+camera capture
+upload
+preview
+retake
+continue
+Guidance:
+“Place your product in good light.”
+“Keep your product centered.”
+Compress oversized images before upload where appropriate.
+Save original before enhancement.
+============================================================
+20. IMAGE ENHANCEMENT SCREEN
+============================================================
+Route:
+/artisan/products/new/enhance
+Show:
+BEFORE | AFTER
+Operations:
+background cleanup lighting correction color correction sharpening crop center e-commerce formatting
+•
+•
+•
+•
+•
+19
+Controls:
+Use Enhanced Image Retry Reject Revert to Original
+Original remains untouched.
+============================================================
+21. VOICE SCREEN
+============================================================
+Route:
+/artisan/products/new/voice
+Primary component:
+large microphone button
+Text:
+“Tell us about your product.”
+Show:
+selected language
+recording status
+duration
+transcript
+Allow:
+replay
+record again
+edit transcript
+continue
+============================================================
+22. CATALOG SCREEN
+============================================================
+Route:
+•
+•
+•
+•
+•
+•
+•
+•
+20
+/artisan/products/new/catalog
+Show generated:
+English Hindi
+Use editable forms/cards.
+Show factuality warning:
+“AI generated this from your description. Please review before publishing.”
+Buttons:
+Edit Regenerate Continue
+Do not overwrite manual edits without confirmation.
+============================================================
+23. PRICING SCREEN
+============================================================
+Route:
+/artisan/products/new/pricing
+Inputs:
+Material cost Labor/time Quantity Optional minimum acceptable price
+Show:
+AI-assisted price estimate
+Recommended: ₹X
+Range: ₹X–₹Y
+Reasoning:
+material
+labor
+•
+•
+21
+market reference
+craft complexity
+Confidence:
+Low / Medium / High
+Buttons:
+Accept Edit Recalculate
+============================================================
+24. REVIEW + PUBLISH
+============================================================
+Route:
+/artisan/products/new/review
+Show:
+image
+English title
+Hindi title
+English description
+Hindi description
+category
+materials
+craft technique
+quantity
+price
+tags
+artisan info
+Buttons:
+Save Draft Edit Publish
+Publishing changes product status to:
+published
+Show success:
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+22
+“Your product is now visible to buyers.”
+============================================================
+25. PRODUCT MANAGEMENT
+============================================================
+Route:
+/artisan/products
+Tabs:
+All Published Drafts Low Stock
+Cards:
+image name price stock status inquiry count
+Actions:
+Edit Update Stock Archive Share
+============================================================
+26. ARTISAN STORY
+============================================================
+Route:
+/artisan/story
+Allow:
+Type Story Speak Story
+Pipeline:
+Voice → Transcript → optional AI polishing → English/Hindi → artisan approval
+Never invent personal history.
+23
+Buyer-facing section:
+“About the Maker”
+============================================================
+27. BUYER MARKETPLACE
+============================================================
+Routes:
+/marketplace /buyer/marketplace
+Support:
+Search Category Craft type Location Material Price Availability Sorting
+Sort:
+Recommended Newest Price Low to High Price High to Low
+Marketplace should emphasize:
+product imagery
+craftsmanship
+artisan
+region
+availability
+Do NOT copy a generic Amazon/Flipkart design.
+============================================================
+28. BUYER PRODUCT DETAIL
+============================================================
+Route:
+/buyer/product/$id
+Display:
+•
+•
+•
+•
+•
+24
+Large product image English/Hindi toggle Title Description Material Craft technique Region Price Quantity
+Artisan About the Maker Craft Story
+Primary action:
+“Send Buyer Inquiry”
+============================================================
+29. B2B INQUIRY
+============================================================
+Buyer submits:
+Buyer name Company Quantity Message Expected delivery date Contact details
+Create real inquiry record.
+Status:
+new responded accepted rejected completed
+Support threaded messages.
+Notify artisan when new inquiry arrives.
+The MVP is focused on B2B market linkage.
+Do NOT implement complex:
+payments
+cart
+shipping
+logistics
+fulfillment
+============================================================
+30. NOTIFICATIONS
+============================================================
+Support:
+•
+•
+•
+•
+•
+25
+New inquiry Inquiry response Product published Low stock AI processing complete
+Create reusable notification components.
+============================================================
+31. DEMO MODE
+============================================================
+Route:
+/demo
+Create:
+Demo Artisan Demo Buyer
+Demo artisan:
+Name: Savitri Devi
+Craft: Handloom
+Region: Telangana
+Experience: 18 years
+Use fictional demo identities.
+Seed:
+categories
+pricing reference data
+six products
+sample inquiries
+Products:
+Handloom Saree
+Kalamkari Textile
+Pottery
+Bamboo Basket
+Wooden Craft
+Embroidered Bag
+•
+•
+•
+•
+1.
+2.
+3.
+4.
+5.
+6.
+26
+============================================================
+32. DEMO GOLDEN FLOW
+============================================================
+Demo Mode must execute:
+Demo Artisan ↓ Dashboard ↓ Add Product ↓ Demo Photo ↓ Original Photo ↓ AI Enhancement ↓ Before/
+After ↓ Demo Voice Recording ↓ Transcript ↓ English + Hindi Catalog ↓ Price Estimate ↓ Review ↓
+Publish ↓ Switch to Buyer ↓ Marketplace ↓ Find Published Product ↓ Product Detail ↓ Send B2B Inquiry
+↓ Switch back to Artisan ↓ Notification ↓ Open Inquiry ↓ Respond
+Demo must be:
+deterministic
+predictable
+repeatable
+independent of external API availability
+============================================================
+33. MOCK AI PROVIDERS
+============================================================
+Create deterministic mock implementations:
+MockSpeechProvider MockTranslationProvider MockCatalogProvider MockPricingProvider
+MockImageEnhancementProvider
+Mocks must:
+use stable results
+use realistic sample data
+preserve request/response shapes
+allow the golden flow to work
+work without API keys
+The UI must clearly indicate when Demo Mode/mock providers are being used.
+============================================================
+•
+•
+•
+•
+•
+•
+•
+•
+•
+27
+34. REAL AI PROVIDER ARCHITECTURE
+============================================================
+Use provider adapters.
+Possible future providers may include:
+Speech provider Translation provider LLM/catalog provider Image processing provider ML pricing provider
+Do NOT hard-code vendor-specific SDK calls into components.
+Use configuration/environment variables.
+Example:
+AI_PROVIDER= SPEECH_PROVIDER= TRANSLATION_PROVIDER= IMAGE_PROVIDER=
+MARKET_DATA_PROVIDER=
+Secrets must remain server-side.
+============================================================
+35. SERVER/API CONTRACTS
+============================================================
+Create server functions or endpoints equivalent to:
+POST /services/speech POST /services/translation POST /services/catalog POST /services/pricing POST /
+services/image-enhancement
+Application APIs:
+GET /api/products POST /api/products PATCH /api/products/$id
+GET /api/inquiries POST /api/inquiries PATCH /api/inquiries/$id
+Use typed request/response schemas.
+Consistent error format:
+{ success: false, error: { code: "...", message: "..." } }
+28
+Never expose raw internal provider errors to users.
+============================================================
+36. MARKETPLACE CONNECTOR
+============================================================
+Create an abstraction:
+MarketplaceConnector
+Potential future adapters:
+institutional buyers
+government marketplaces
+partner marketplaces
+For this prototype:
+Implement ONLY the internal B2B marketplace.
+Do not fake external government integrations.
+============================================================
+37. LOW-LITERACY UX
+============================================================
+This is a core requirement.
+Artisan interface must use:
+large icons
+large touch targets
+simple language
+one task per screen
+minimal text
+strong primary CTA
+visual progress
+voice assistance
+high contrast
+Main actions:
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+29
+ Take Photo Speak Improve Photo Create Listing ₹ Check Price Publish
+Every screen should make the next action obvious.
+============================================================
+38. VISUAL DESIGN
+============================================================
+Design direction:
+MODERN INDIAN HERITAGE
++ CLEAN TECHNOLOGY
+Use:
+warm neutral foundation
+subtle textile/craft inspiration
+large product photographs
+clean typography
+generous spacing
+rounded cards
+accessible contrast
+Avoid:
+generic SaaS aesthetics
+excessive gradients
+neon
+clutter
+excessive decorative patterns
+The artisan UI should be simpler than the admin UI.
+============================================================
+39. RESPONSIVE DESIGN
+============================================================
+Primary target:
+360–480px mobile
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+30
+Also support:
+tablet desktop
+Mobile:
+bottom navigation
+one-column layouts
+thumb-friendly controls
+prominent Add Product action
+Desktop:
+sidebar
+marketplace grid
+admin tables
+============================================================
+40. PWA + OFFLINE
+============================================================
+Implement:
+web manifest
+service worker
+installability
+cached app shell
+offline indicator
+local draft persistence
+synchronization when connectivity returns
+Important:
+AI-dependent services require internet access.
+Do not claim that AI services work offline.
+Offline mode should preserve:
+draft metadata
+text
+product state
+============================================================
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+31
+41. ERROR STATES
+============================================================
+Camera:
+“Camera permission is required to take a photo.”
+Microphone:
+“Microphone access is unavailable. You can type the details instead.”
+AI:
+“We couldn't reach the AI service. Your draft is safe.”
+Network:
+“You're offline. Your draft has been saved.”
+Never leave users on blank screens.
+============================================================
+42. LOADING STATES
+============================================================
+Use clear processing states:
+Image: “Improving your product photo…”
+Voice: “Understanding your description…”
+Catalog: “Creating your product listing…”
+Price: “Preparing your price estimate…”
+Use appropriate skeletons, spinners or progress indicators.
+============================================================
+32
+43. ACCESSIBILITY
+============================================================
+Implement:
+semantic HTML
+accessible forms
+keyboard navigation
+focus states
+alt text
+screen reader labels
+high contrast
+large touch targets
+Icon-only buttons must have accessible labels.
+Do not communicate information through color alone.
+============================================================
+44. SECURITY
+============================================================
+Implement:
+Supabase Auth
+server-side authorization
+RLS
+Zod validation
+protected routes
+secure file uploads
+file type restrictions
+file size restrictions
+server-side AI calls
+server-side secrets
+private buyer data protection
+Never expose secrets to the browser.
+============================================================
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+33
+45. ANALYTICS
+============================================================
+Track lightweight events:
+product_created photo_uploaded image_enhanced voice_recorded catalog_generated price_generated
+product_published marketplace_viewed inquiry_created inquiry_responded
+Avoid collecting unnecessary personal information.
+============================================================
+46. PERFORMANCE
+============================================================
+Optimize for mobile networks.
+Use:
+image compression
+lazy loading
+responsive images
+pagination
+caching
+optimized database queries
+Do not load the entire catalog at once.
+============================================================
+47. TESTING
+============================================================
+Test:
+Authentication Role authorization RLS Product creation Image upload Image enhancement mock Speech
+mock Translation Catalog generation Pricing Publishing Marketplace discovery Inquiry creation Inquiry
+response Notifications Language switching Offline drafts Demo Mode
+Most important end-to-end test:
+•
+•
+•
+•
+•
+•
+34
+PHOTO → ENHANCE → VOICE → TRANSCRIPT → CATALOG → PRICE → REVIEW → PUBLISH → BUYER →
+INQUIRY → ARTISAN RESPONSE
+============================================================
+48. SIH REQUIREMENT TRACEABILITY
+============================================================
+Maintain explicit mapping between the problem statement and implementation.
+SIH AI Image Enhancer & Studio → camera/upload → background removal → lighting correction →
+product-preserving enhancement → e-commerce formatting → before/after review
+SIH Multilingual Auto-Cataloger → regional voice input → speech-to-text → translation → English + Hindi
+catalog → search/SEO keywords → artisan review
+SIH Dynamic Pricing Assistant → material cost → labor → craft complexity → category → region → market
+references → price range → transparent reasoning → ML-ready architecture
+SIH Digital Market Linkage → product publishing → B2B marketplace → buyer discovery → inquiry →
+artisan response
+SIH Low-Literacy Requirement → icon-driven interface → voice interaction → minimal typing → one-task
+screens → simple language
+SIH Heritage & Culture → artisan story → craft technique → region → About the Maker
+============================================================
+49. ENVIRONMENT VARIABLES
+============================================================
+Create:
+.env.example
+Include:
+DATABASE_URL= SUPABASE_URL= SUPABASE_ANON_KEY= SUPABASE_SERVICE_ROLE_KEY=
+AI_PROVIDER= AI_API_KEY=
+35
+SPEECH_PROVIDER= SPEECH_API_KEY=
+TRANSLATION_PROVIDER= TRANSLATION_API_KEY=
+IMAGE_PROVIDER= IMAGE_API_KEY=
+MARKET_DATA_PROVIDER=
+Never include real secrets.
+Never expose server-only secrets through client-exposed environment variables.
+============================================================
+50. DOCUMENTATION
+============================================================
+Create README containing:
+product overview
+SIH26090 mapping
+architecture
+folder structure
+setup
+environment variables
+Supabase configuration
+migrations
+seed data
+AI provider architecture
+mock mode
+Demo Mode
+PWA
+testing
+deployment
+known limitations
+future ML pricing architecture
+Include a Mermaid architecture diagram.
+============================================================
+51. SCOPE CONTROL
+============================================================
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+36
+Do NOT implement these during the core MVP unless explicitly requested later:
+payment gateway
+shopping cart
+shipping
+logistics
+order fulfillment
+loyalty
+advertising
+social media feed
+cryptocurrency
+complicated recommendation engines
+fake government API integration
+Prioritize the SIH requirements.
+============================================================
+52. SIH DEMO EXPERIENCE
+============================================================
+The first 30–60 seconds of the demonstration should make the value proposition obvious.
+A judge should immediately understand:
+“An artisan can create a professional digital product listing without needing advanced photography, English
+writing, or technical e-commerce skills.”
+Make the three flagship capabilities visually obvious:
+AI IMAGE STUDIO AI VOICE CATALOGER SMART PRICE
+============================================================
+53. FINAL ACCEPTANCE CRITERIA
+============================================================
+The application is NOT considered complete unless a judge can complete this flow without developer
+intervention:
+Open KarigarAI
+Enter Demo Artisan
+Open Dashboard
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+1.
+2.
+3.
+37
+Click Add Product
+Select/capture demo product photo
+View original image
+Run enhancement
+View before/after
+Accept enhanced image
+Record/use demo voice
+View transcript
+Generate English catalog
+Generate Hindi catalog
+Edit catalog
+Generate price estimate
+Review price
+Publish product
+Switch to Buyer
+Find published product
+Open product details
+View artisan story
+Send B2B inquiry
+Switch back to Artisan
+Receive notification
+Open inquiry
+Respond
+This is the PRIMARY acceptance test.
+============================================================
+54. FINAL INSTRUCTION TO REPLIT AGENT
+============================================================
+Build this as a real full-stack application, not a collection of static mock screens.
+Use real:
+authentication
+database
+authorization
+product persistence
+marketplace records
+inquiry records
+notifications
+demo data
+Use mock implementations only for external AI capabilities where required.
+4.
+5.
+6.
+7.
+8.
+9.
+10.
+11.
+12.
+13.
+14.
+15.
+16.
+17.
+18.
+19.
+20.
+21.
+22.
+23.
+24.
+25.
+26.
+•
+•
+•
+•
+•
+•
+•
+•
+38
+Clearly separate:
+REAL APPLICATION FUNCTIONALITY
+from
+MOCK AI FUNCTIONALITY.
+Keep all AI services replaceable through provider interfaces.
+Keep database access behind repositories.
+Keep secrets server-side.
+Keep original product images unchanged.
+Keep the pricing implementation technically honest.
+Do not invent APIs, datasets, government integrations, or unsupported product facts.
+Do not replace TanStack Start without explicit approval.
+Do not replace PostgreSQL/Supabase without explicit approval.
+Do not attempt all phases in one pass.
+Start with PHASE 1 ONLY.
+After Phase 1, verify everything and STOP.
+Wait for explicit instruction before moving to Phase 2.
+39

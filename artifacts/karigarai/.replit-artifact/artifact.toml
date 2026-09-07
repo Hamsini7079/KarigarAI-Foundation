@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "KarigarAI"
+description = "A mobile-first business manager for marginalized Indian artisans, helping them prepare handmade products for buyer discovery through simple, accessible, multilingual workflows."
+version = "1.0.0"
+id = "artifacts/karigarai"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 18669
+
+[services.development]
+run = "pnpm --filter @workspace/karigarai run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/karigarai", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/karigarai/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "18669"
+BASE_PATH = "/"

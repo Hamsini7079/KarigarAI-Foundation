@@ -10,6 +10,12 @@ servers:
 tags:
   - name: health
     description: Health operations
+  - name: foundation
+    description: Phase 1 foundation and configuration
+  - name: catalog
+    description: Public catalog and reference data
+  - name: demo
+    description: Deterministic demo data for the SIH presentation flow
 paths:
   /healthz:
     get:
@@ -24,6 +30,77 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+  /foundation/status:
+    get:
+      operationId: getFoundationStatus
+      tags: [foundation]
+      summary: Get application foundation status
+      responses:
+        "200":
+          description: Foundation status
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FoundationStatus"
+  /categories:
+    get:
+      operationId: listCategories
+      tags: [catalog]
+      summary: List craft categories
+      responses:
+        "200":
+          description: Craft categories
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Category"
+  /marketplace/products:
+    get:
+      operationId: listMarketplaceProducts
+      tags: [catalog]
+      summary: List published products for marketplace discovery
+      parameters:
+        - name: search
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: category
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 50
+            default: 12
+      responses:
+        "200":
+          description: Published products
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/MarketplaceProduct"
+  /demo/overview:
+    get:
+      operationId: getDemoOverview
+      tags: [demo]
+      summary: Get deterministic demo overview
+      responses:
+        "200":
+          description: Demo overview
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DemoOverview"
 components:
   schemas:
     HealthStatus:
@@ -33,4 +110,136 @@ components:
           type: string
       required:
         - status
+    FoundationStatus:
+      type: object
+      required:
+        - appName
+        - tagline
+        - phase
+        - authProvider
+        - dataProvider
+        - aiMode
+        - roles
+        - supportedLanguages
+        - storageBuckets
+      properties:
+        appName:
+          type: string
+        tagline:
+          type: string
+        phase:
+          type: string
+        authProvider:
+          type: string
+        dataProvider:
+          type: string
+        aiMode:
+          type: string
+        roles:
+          type: array
+          items:
+            type: string
+        supportedLanguages:
+          type: array
+          items:
+            type: string
+        storageBuckets:
+          type: array
+          items:
+            type: string
+    Category:
+      type: object
+      required:
+        - id
+        - name
+        - nameHindi
+        - icon
+        - productCount
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        nameHindi:
+          type: string
+        icon:
+          type: string
+        productCount:
+          type: integer
+    MarketplaceProduct:
+      type: object
+      required:
+        - id
+        - title
+        - titleHindi
+        - category
+        - craft
+        - region
+        - price
+        - quantity
+        - artisanName
+        - imageUrl
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        titleHindi:
+          type: string
+        category:
+          type: string
+        craft:
+          type: string
+        region:
+          type: string
+        price:
+          type: number
+        quantity:
+          type: integer
+        artisanName:
+          type: string
+        imageUrl:
+          type: string
+        imageAlt:
+          type: string
+        status:
+          type: string
+    DemoArtisan:
+      type: object
+      required:
+        - name
+        - craft
+        - region
+        - experienceYears
+        - initials
+      properties:
+        name:
+          type: string
+        craft:
+          type: string
+        region:
+          type: string
+        experienceYears:
+          type: integer
+        initials:
+          type: string
+    DemoOverview:
+      type: object
+      required:
+        - artisan
+        - publishedProducts
+        - draftCount
+        - unreadNotifications
+        - nextPhase
+      properties:
+        artisan:
+          $ref: "#/components/schemas/DemoArtisan"
+        publishedProducts:
+          type: integer
+        draftCount:
+          type: integer
+        unreadNotifications:
+          type: integer
+        nextPhase:
+          type: string
 

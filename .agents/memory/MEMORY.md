@@ -1,0 +1,1 @@
+- [Phase 1 foundation](phase1-foundation.md) — use real PostgreSQL/demo data now; connect Supabase before authenticated flows, uploads, RLS, or Phase 2.
