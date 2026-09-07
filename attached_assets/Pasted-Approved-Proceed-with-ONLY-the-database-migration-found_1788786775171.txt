@@ -1,0 +1,75 @@
+Approved.
+
+Proceed with ONLY the database migration foundation described in your SUPABASE MIGRATION PLAN.
+
+Important constraints:
+
+1. Do NOT start Phase 2.
+2. Do NOT implement authentication.
+3. Do NOT implement RBAC.
+4. Do NOT implement RLS yet.
+5. Do NOT create Storage buckets yet.
+6. Do NOT implement uploads.
+7. Do NOT implement any AI workflow.
+8. Do NOT modify or delete the current local PostgreSQL database.
+9. Do NOT replace Drizzle with PostgREST.
+10. Do NOT use drizzle-kit push-force for this migration.
+11. Do NOT perform destructive drops, renames, or broad cleanup.
+
+Architecture to preserve:
+
+React/Vite
+→ Express API
+→ application services/repositories where applicable
+→ Drizzle ORM
+→ node-postgres
+→ Supabase PostgreSQL
+
+Implementation scope:
+
+1. Create the reviewed Drizzle-compatible Supabase SQL migration.
+2. Configure migration tooling safely.
+3. Add only non-breaking schema constraints/indexes that were identified in the approved plan.
+4. Keep the current local database untouched.
+5. Create/maintain a server-only SUPABASE_DATABASE_URL for migration execution.
+6. Apply the migration ONLY to the Supabase database.
+7. Seed deterministic demo data into Supabase.
+8. Verify all expected tables.
+9. Verify primary keys and foreign keys.
+10. Verify constraints and indexes.
+11. Verify demo row counts and relationships.
+12. Verify existing marketplace reads against Supabase.
+13. Verify relevant application writes against Supabase where currently supported.
+14. Do NOT cut over the live application to Supabase yet unless verification is complete and you explicitly report that it is safe.
+
+Migration safety:
+
+- Preserve the local PostgreSQL database unchanged.
+- Do not use DROP DATABASE.
+- Do not use DROP SCHEMA.
+- Do not use destructive reset commands.
+- Use explicit migration history.
+- Make seed operations idempotent where practical.
+- If migration fails, stop and report the failure rather than improvising.
+
+At the end produce:
+
+SUPABASE DATABASE MIGRATION REPORT
+
+1. Migration status: PASS / FAIL
+2. Supabase schema status
+3. Tables created
+4. Relationships verified
+5. Constraints verified
+6. Indexes verified
+7. Demo seed status
+8. Marketplace read verification
+9. Application write verification
+10. Local database preserved: YES/NO
+11. Supabase DATABASE_URL/configuration status
+12. Exact files changed
+13. Any warnings/errors
+14. Remaining risks
+15. Is Supabase database ready for the next security/authentication stage? YES/NO
+
+Do not proceed beyond this scope.
