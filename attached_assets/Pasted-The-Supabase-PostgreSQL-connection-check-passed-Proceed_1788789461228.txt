@@ -1,0 +1,70 @@
+The Supabase PostgreSQL connection check passed.
+
+Proceed with the APPROVED Supabase database migration foundation only.
+
+IMPORTANT:
+- Do NOT start authentication.
+- Do NOT implement RBAC.
+- Do NOT implement RLS.
+- Do NOT create Storage buckets.
+- Do NOT implement uploads.
+- Do NOT implement AI workflows.
+- Do NOT start Phase 2.
+- Do NOT modify, delete, reset, or migrate the current local PostgreSQL database.
+- Do NOT replace Drizzle with PostgREST.
+- Do NOT use destructive commands such as DROP DATABASE, DROP SCHEMA, TRUNCATE, or drizzle-kit push-force.
+
+Use:
+
+React/Vite
+→ Express API
+→ Drizzle ORM
+→ node-postgres
+→ Supabase PostgreSQL
+
+Perform only the reviewed migration:
+
+1. Apply the KarigarAI database schema to Supabase PostgreSQL.
+2. Create the 13 approved tables.
+3. Create the approved primary keys and foreign keys.
+4. Create the approved non-authentication constraints.
+5. Create the approved indexes.
+6. Apply the reviewed migration through the explicit migration file/history.
+7. Run the idempotent Supabase demo seed.
+8. Verify table existence.
+9. Verify relationships.
+10. Verify constraints.
+11. Verify indexes.
+12. Verify demo row counts.
+13. Verify product/category/artisan relationships.
+14. Verify the existing marketplace API can read the Supabase data when explicitly targeted with DB_TARGET=supabase.
+15. Verify the current local database still works and remains unchanged.
+
+Do not change the application's default DATABASE_URL yet.
+
+If any migration step fails:
+- stop
+- do not improvise
+- do not reset the database
+- report the exact failure
+
+After successful migration, produce:
+
+SUPABASE DATABASE MIGRATION REPORT
+
+1. Migration status
+2. Supabase schema status
+3. Tables created
+4. Relationships verified
+5. Constraints verified
+6. Indexes verified
+7. Demo seed status
+8. Supabase marketplace read verification
+9. Local database preserved
+10. DB_TARGET=supabase verification
+11. Exact files changed
+12. Warnings/errors
+13. Remaining risks
+14. Is the Supabase database foundation ready for Storage/RLS/Auth? YES/NO
+
+Do not proceed beyond this scope.
