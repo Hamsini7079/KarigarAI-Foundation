@@ -1,0 +1,247 @@
+The Phase 1 QA report says PASS WITH FIXES, but it also identifies important foundation gaps.
+
+Do NOT start Phase 2.
+
+I want you to bring Phase 1 to a proper production-quality foundation before we implement the artisan golden flow.
+
+Use the existing architecture and code. Do not rewrite the project unnecessarily.
+
+First inspect the current implementation and then implement the following fixes in the safest order.
+
+PRIORITY 1 — AUTHENTICATION
+
+Implement real authentication using the project's intended authentication/backend architecture.
+
+Requirements:
+
+* Real signup
+* Real login
+* Real logout
+* Real session handling
+* Protected authenticated routes
+* Server-side authentication checks
+* Proper authentication error handling
+
+Do not leave login/signup as demo confirmation screens.
+
+Do not expose secrets to the frontend.
+
+PRIORITY 2 — RBAC
+
+Implement real server-side role-based access control for:
+
+* ARTISAN
+* BUYER
+* ADMIN
+
+Requirements:
+
+* Role stored in the database
+* Server-side authorization middleware/checks
+* Protected role-specific routes
+* Backend authorization for write operations
+* Users cannot access another role's protected functionality
+
+Do not rely only on frontend route hiding.
+
+PRIORITY 3 — PROTECTED ROUTES
+
+Protect the appropriate routes.
+
+An unauthenticated user must not be able to directly open protected artisan, buyer, or admin pages.
+
+For example:
+
+* /artisan/*
+* /buyer/*
+* /admin/*
+
+Demo mode must remain available separately at /demo.
+
+Do not break public pages such as:
+
+* /
+* /about
+* /marketplace
+* /product/*
+* /login
+* /signup
+* /demo
+
+PRIORITY 4 — AI PROVIDER ABSTRACTIONS
+
+Create real provider interfaces and service boundaries for:
+
+* SpeechProvider
+* TranslationProvider
+* CatalogProvider
+* PricingProvider
+* ImageEnhancementProvider
+
+Use provider-independent interfaces.
+
+For each provider, create:
+
+* interface/contract
+* service layer
+* deterministic mock implementation where real integration is not yet available
+
+Do NOT implement the actual Phase 2 AI workflow yet.
+
+The purpose here is architectural preparation only.
+
+PRIORITY 5 — STORAGE FOUNDATION
+
+Prepare proper image storage architecture.
+
+Do not use data-URI values as the long-term product image storage design.
+
+Create a clean abstraction for product image storage that can later use real object storage/Supabase Storage.
+
+Do not implement the full image-upload/enhancement workflow yet.
+
+PRIORITY 6 — DATABASE SECURITY
+
+Prepare/enforce appropriate database security for the authenticated architecture.
+
+Where the current platform supports it:
+
+* row-level security
+* ownership rules
+* protected private data
+* role-aware access
+
+Do not expose:
+
+* buyer contact information
+* private inquiry data
+* private artisan information
+* internal AI logs
+
+through public marketplace endpoints.
+
+PRIORITY 7 — SERVICE/REPOSITORY SEPARATION
+
+The QA report says API handlers currently query the database directly.
+
+Refactor only where it provides clear architectural value.
+
+For write-heavy and business-logic operations, establish:
+
+UI
+→ API/server
+→ service
+→ repository/data access
+→ database
+
+Do not perform a massive rewrite.
+
+Preserve the current working marketplace endpoints.
+
+PRIORITY 8 — TESTING
+
+Add a basic automated test foundation.
+
+At minimum create tests for:
+
+* authentication behavior where practical
+* authorization/RBAC
+* protected routes
+* API validation
+* marketplace filtering
+* product ownership rules
+
+Add the appropriate test script to the project.
+
+PRIORITY 9 — LINTING
+
+Add a suitable linting setup consistent with the project's existing TypeScript/React setup.
+
+Make sure linting does not create unnecessary unrelated refactoring.
+
+PRIORITY 10 — PROJECT MEMORY
+
+Update PROJECT_MEMORY.md so it reflects the ACTUAL implementation.
+
+Do not document planned features as completed.
+
+Clearly distinguish:
+
+* implemented
+* mocked
+* planned
+* not yet available
+
+IMPORTANT ENGINEERING RULES
+
+* Do not implement Phase 2.
+* Do not implement voice recording.
+* Do not implement image enhancement.
+* Do not implement catalog generation.
+* Do not implement pricing workflow.
+* Do not implement publishing workflow.
+* Do not implement buyer inquiry workflow.
+* Do not add fake government integrations.
+* Do not invent APIs.
+* Do not invent datasets.
+* Do not claim mock providers are real AI.
+* Do not break the existing public marketplace/demo functionality.
+* Reuse existing services/components/utilities.
+* Avoid unnecessary dependencies.
+* Avoid large rewrites.
+
+IMPLEMENTATION ORDER
+
+1. Inspect current authentication/backend setup.
+2. Implement real authentication.
+3. Implement server-side RBAC.
+4. Protect routes.
+5. Implement provider interfaces and mock adapters.
+6. Establish storage abstraction.
+7. Strengthen database security/ownership rules.
+8. Refactor important business operations toward service/repository separation.
+9. Add tests.
+10. Add linting.
+11. Update PROJECT_MEMORY.md.
+12. Run complete verification.
+
+After implementation run:
+
+* typecheck
+* lint
+* tests
+* production build
+
+Then perform manual verification of:
+
+* signup
+* login
+* logout
+* protected artisan route
+* protected buyer route
+* protected admin route
+* role restrictions
+* public marketplace
+* public product page
+* demo mode
+
+Finally produce:
+
+PHASE 1 FIX REPORT
+
+1. What was changed
+2. Authentication status
+3. RBAC status
+4. Protected route status
+5. Provider architecture status
+6. Storage status
+7. Database security status
+8. Service/repository architecture status
+9. Testing status
+10. Lint status
+11. Build/typecheck status
+12. Exact files changed
+13. Remaining limitations
+14. Whether Phase 1 is now READY FOR PHASE 2
+
+Do not declare Phase 1 ready unless the implementation has actually been tested.
