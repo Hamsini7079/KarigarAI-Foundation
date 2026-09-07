@@ -122,7 +122,7 @@ function Home() {
         </section>
         <section className="section">
           <div className="container-wide">
-            <div className="callout"><div><h2 className="display">See the foundation before you decide.</h2><p>Step into a deterministic demo made for a textile artisan in Kutch.</p></div><Link href="/demo" className="button button-gold" data-testid="link-callout-demo">Open demo <ArrowRight size={16} /></Link></div>
+            <div className="callout"><div><h2 className="display">See the foundation before you decide.</h2><p>Step into a deterministic demo made for a handloom artisan in Telangana.</p></div><Link href="/demo" className="button button-gold" data-testid="link-callout-demo">Open demo <ArrowRight size={16} /></Link></div>
           </div>
         </section>
       </main>
