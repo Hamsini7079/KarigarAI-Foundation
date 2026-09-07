@@ -1,0 +1,80 @@
+The Supabase database migration has already succeeded.
+
+IMPORTANT: I have limited Replit credits remaining.
+
+Perform ONLY the minimum safe fix required to make the Supabase demo seed runner work.
+
+Current error:
+
+ERR_UNSUPPORTED_DIR_IMPORT
+
+The failing import is:
+
+/home/runner/workspace/lib/db/src/schema
+
+from:
+
+/home/runner/workspace/lib/db/src/index.ts
+
+Do NOT redesign the architecture.
+
+Do NOT:
+- migrate the database again
+- regenerate the schema
+- recreate tables
+- modify the local PostgreSQL database
+- implement Auth
+- implement RBAC
+- implement RLS
+- create Storage buckets
+- start Phase 2
+- refactor unrelated code
+- add unnecessary dependencies
+
+First inspect the existing module format and package configuration.
+
+Fix ONLY the ESM/TypeScript import-resolution problem so that:
+
+pnpm --filter @workspace/api-server run seed:supabase
+
+can execute successfully.
+
+Prefer the smallest maintainable fix consistent with the existing workspace configuration.
+
+After the fix:
+
+1. Run the Supabase seed command once.
+2. Verify the seed completed successfully.
+3. Verify the Supabase database contains:
+   - 1 demo profile
+   - 1 demo artisan
+   - 1 artisan role
+   - 6 categories
+   - 6 products
+   - 6 product image records
+4. Verify key foreign-key relationships.
+5. Verify the existing local database was not modified.
+6. Do not switch the application's default DATABASE_URL.
+7. Do not run destructive commands.
+
+Run only the minimum necessary typecheck/build check for affected packages.
+
+Then report:
+
+SUPABASE SEED FIX REPORT
+
+- Import-resolution fix: PASS/FAIL
+- Seed execution: PASS/FAIL
+- Demo profile: PASS/FAIL
+- Demo artisan: PASS/FAIL
+- Demo role: PASS/FAIL
+- Categories: PASS/FAIL
+- Products: PASS/FAIL
+- Product images: PASS/FAIL
+- Relationships: PASS/FAIL
+- Local database unchanged: YES/NO
+- Exact files changed
+- Remaining issue
+- Is the Supabase schema + demo data ready for the next security stage? YES/NO
+
+STOP after this report.
