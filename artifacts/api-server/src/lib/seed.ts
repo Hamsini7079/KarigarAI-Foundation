@@ -2,6 +2,7 @@ import { db } from "@workspace/db";
 import {
   artisansTable,
   categoriesTable,
+  marketReferencePricesTable,
   productImagesTable,
   productsTable,
   profilesTable,
@@ -89,6 +90,69 @@ const demoProducts = [
   },
 ];
 
+const demoMarketReferencePrices = [
+  {
+    id: "demo-market-handloom-telangana",
+    category: "Handloom",
+    craft: "Handloom weaving",
+    material: "Cotton",
+    region: "Telangana",
+    unit: "per piece",
+    referencePrice: "4500",
+    sourceLabel: "KarigarAI seeded-demo reference (illustrative only)",
+  },
+  {
+    id: "demo-market-kalamkari-andhra",
+    category: "Textile",
+    craft: "Kalamkari",
+    material: "Cotton canvas",
+    region: "Andhra Pradesh",
+    unit: "per piece",
+    referencePrice: "2100",
+    sourceLabel: "KarigarAI seeded-demo reference (illustrative only)",
+  },
+  {
+    id: "demo-market-pottery-telangana",
+    category: "Pottery",
+    craft: "Terracotta pottery",
+    material: "Terracotta",
+    region: "Telangana",
+    unit: "per set",
+    referencePrice: "1100",
+    sourceLabel: "KarigarAI seeded-demo reference (illustrative only)",
+  },
+  {
+    id: "demo-market-bamboo-assam",
+    category: "Bamboo",
+    craft: "Bamboo weaving",
+    material: "Bamboo",
+    region: "Assam",
+    unit: "per basket",
+    referencePrice: "750",
+    sourceLabel: "KarigarAI seeded-demo reference (illustrative only)",
+  },
+  {
+    id: "demo-market-wood-karnataka",
+    category: "Wood craft",
+    craft: "Wood carving",
+    material: "Neem wood",
+    region: "Karnataka",
+    unit: "per piece",
+    referencePrice: "1350",
+    sourceLabel: "KarigarAI seeded-demo reference (illustrative only)",
+  },
+  {
+    id: "demo-market-embroidery-gujarat",
+    category: "Embroidery",
+    craft: "Hand embroidery",
+    material: "Cotton thread",
+    region: "Gujarat",
+    unit: "per bag",
+    referencePrice: "1600",
+    sourceLabel: "KarigarAI seeded-demo reference (illustrative only)",
+  },
+];
+
 export async function ensureDemoData(): Promise<void> {
   await db
     .insert(profilesTable)
@@ -126,6 +190,11 @@ export async function ensureDemoData(): Promise<void> {
   await db
     .insert(categoriesTable)
     .values(demoCategories)
+    .onConflictDoNothing();
+
+  await db
+    .insert(marketReferencePricesTable)
+    .values(demoMarketReferencePrices)
     .onConflictDoNothing();
 
   for (const product of demoProducts) {
