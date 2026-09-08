@@ -1,0 +1,74 @@
+You are working ONLY on the KarigarAI BACKEND.
+
+This is an existing project. Do NOT restart, rewrite, or restructure it.
+
+Current branch:
+feature/backend-foundation
+
+IMPORTANT:
+Replit Agent credits are limited. Make the smallest possible change set.
+Do not perform broad refactoring.
+Do not modify frontend files.
+Do not modify authentication, RLS, RBAC, Supabase configuration, or secrets.
+
+We have already inspected the repository.
+
+Confirmed facts:
+- Express backend exists.
+- Drizzle ORM is used.
+- PostgreSQL is used.
+- Supabase PostgreSQL is already migrated and working.
+- Database contains:
+  - products
+  - market_reference_prices
+  - pricing_recommendations
+- products already contains:
+  - categoryId
+  - craft
+  - material
+  - region
+  - price
+  - quantity
+- pricing_recommendations already contains:
+  - recommendedPrice
+  - minimumPrice
+  - maximumPrice
+  - confidence
+  - reasoning
+- Current providers are mock/seeded-demo.
+- Do not claim this is a trained ML pricing model.
+
+TASK:
+Implement ONLY a small backend Pricing Recommendation capability.
+
+Required behavior:
+1. Add the endpoint to the existing OpenAPI source of truth.
+2. Add or reuse a pricing service/provider abstraction.
+3. Accept the available product/pricing inputs needed for the recommendation.
+4. Query the existing market_reference_prices table where appropriate.
+5. Calculate:
+   - minimumPrice
+   - recommendedPrice
+   - maximumPrice
+   - confidence
+   - reasoning
+6. Use a transparent rule-based calculation.
+7. Persist the recommendation into pricing_recommendations where appropriate.
+8. Do not add unnecessary database tables or schema changes.
+9. Do not call paid external AI APIs.
+10. Do not touch frontend code.
+11. Do not implement authentication/RLS/RBAC in this task.
+
+IMPORTANT ARCHITECTURE RULE:
+openapi.yaml is the API contract source of truth.
+Do not hand-edit generated API clients.
+If openapi.yaml changes, run the project's required code generation command.
+
+WORKFLOW:
+1. Analyze only the files needed for this task.
+2. Briefly list the exact files you intend to change.
+3. Implement only this pricing capability.
+4. Run appropriate typecheck/build/tests.
+5. Summarize exactly what was implemented and anything still mocked/planned.
+
+Do not implement any other feature.

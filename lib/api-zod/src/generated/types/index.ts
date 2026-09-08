@@ -13,3 +13,6 @@ export * from './foundationStatus';
 export * from './healthStatus';
 export * from './listMarketplaceProductsParams';
 export * from './marketplaceProduct';
+export * from './pricingRecommendation';
+export * from './pricingRecommendationConfidence';
+export * from './pricingRecommendationInput';

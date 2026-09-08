@@ -44,6 +44,55 @@ export interface MarketplaceProduct {
   status?: string;
 }
 
+export interface PricingRecommendationInput {
+  /**
+     * Optional price override; defaults to the product price.
+     * @minimum 0
+     */
+  currentPrice?: number;
+  /**
+     * Optional inventory override; defaults to the product quantity.
+     * @minimum 0
+     */
+  quantity?: number;
+  /**
+     * Optional craft override; defaults to the product craft.
+     * @minLength 1
+     */
+  craft?: string;
+  /**
+     * Optional material override; defaults to the product material.
+     * @minLength 1
+     */
+  material?: string;
+  /**
+     * Optional region override; defaults to the product region.
+     * @minLength 1
+     */
+  region?: string;
+}
+
+export type PricingRecommendationConfidence = typeof PricingRecommendationConfidence[keyof typeof PricingRecommendationConfidence];
+
+
+export const PricingRecommendationConfidence = {
+  low: 'low',
+  medium: 'medium',
+  high: 'high',
+} as const;
+
+export interface PricingRecommendation {
+  id: string;
+  productId: string;
+  minimumPrice: number;
+  recommendedPrice: number;
+  maximumPrice: number;
+  confidence: PricingRecommendationConfidence;
+  reasoning: string;
+  /** @minimum 0 */
+  marketReferenceCount: number;
+}
+
 export interface DemoArtisan {
   name: string;
   craft: string;

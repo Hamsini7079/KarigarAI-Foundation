@@ -6,11 +6,15 @@
  * OpenAPI spec version: 0.1.0
  */
 import {
+  useMutation,
   useQuery
 } from '@tanstack/react-query';
 import type {
+  MutationFunction,
   QueryFunction,
   QueryKey,
+  UseMutationOptions,
+  UseMutationResult,
   UseQueryOptions,
   UseQueryResult
 } from '@tanstack/react-query';
@@ -21,11 +25,13 @@ import type {
   FoundationStatus,
   HealthStatus,
   ListMarketplaceProductsParams,
-  MarketplaceProduct
+  MarketplaceProduct,
+  PricingRecommendation,
+  PricingRecommendationInput
 } from './api.schemas';
 
 import { customFetch } from '../custom-fetch';
-import type { ErrorType } from '../custom-fetch';
+import type { ErrorType , BodyType } from '../custom-fetch';
 
 type AwaitedInput<T> = PromiseLike<T> | T;
 
@@ -366,6 +372,79 @@ export function useListMarketplaceProducts<TData = Awaited<ReturnType<typeof lis
 
 
 
+
+export const getCreatePricingRecommendationUrl = (productId: string,) => {
+
+
+
+
+  return `/api/products/${productId}/pricing-recommendation`
+}
+
+/**
+ * Calculates and persists a transparent recommendation using product data and seeded market references when available.
+ * @summary Create a rule-based pricing recommendation
+ */
+export const createPricingRecommendation = async (productId: string,
+    pricingRecommendationInput?: PricingRecommendationInput, options?: Parameters<typeof customFetch>[1]): Promise<PricingRecommendation> => {
+
+  return customFetch<PricingRecommendation>(getCreatePricingRecommendationUrl(productId),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(pricingRecommendationInput)
+  }
+);}
+
+
+
+
+
+export const getCreatePricingRecommendationMutationOptions = <TError = ErrorType<void>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createPricingRecommendation>>, TError,{productId: string;data?: BodyType<PricingRecommendationInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof createPricingRecommendation>>, TError,{productId: string;data?: BodyType<PricingRecommendationInput>}, TContext> => {
+
+const mutationKey = ['createPricingRecommendation'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createPricingRecommendation>>, {productId: string;data?: BodyType<PricingRecommendationInput>}> = (props) => {
+          const {productId,data} = props ?? {};
+
+          return  createPricingRecommendation(productId,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type CreatePricingRecommendationMutationResult = NonNullable<Awaited<ReturnType<typeof createPricingRecommendation>>>
+    export type CreatePricingRecommendationMutationBody = BodyType<PricingRecommendationInput> | undefined
+    export type CreatePricingRecommendationMutationError = ErrorType<void>
+
+    /**
+ * @summary Create a rule-based pricing recommendation
+ */
+export const useCreatePricingRecommendation = <TError = ErrorType<void>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createPricingRecommendation>>, TError,{productId: string;data?: BodyType<PricingRecommendationInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof createPricingRecommendation>>,
+        TError,
+        {productId: string;data?: BodyType<PricingRecommendationInput>},
+        TContext
+      > => {
+      return useMutation(getCreatePricingRecommendationMutationOptions(options));
+    }
 
 export const getGetDemoOverviewUrl = () => {
 

@@ -78,6 +78,47 @@ export const ListMarketplaceProductsResponse = zod.array(ListMarketplaceProducts
 
 
 /**
+ * Calculates and persists a transparent recommendation using product data and seeded market references when available.
+ * @summary Create a rule-based pricing recommendation
+ */
+export const CreatePricingRecommendationParams = zod.object({
+  "productId": zod.coerce.string()
+})
+
+export const createPricingRecommendationBodyCurrentPriceMin = 0;
+
+export const createPricingRecommendationBodyQuantityMin = 0;
+
+
+
+
+
+
+export const CreatePricingRecommendationBody = zod.object({
+  "currentPrice": zod.number().min(createPricingRecommendationBodyCurrentPriceMin).optional().describe('Optional price override; defaults to the product price.'),
+  "quantity": zod.number().int().min(createPricingRecommendationBodyQuantityMin).optional().describe('Optional inventory override; defaults to the product quantity.'),
+  "craft": zod.string().min(1).optional().describe('Optional craft override; defaults to the product craft.'),
+  "material": zod.string().min(1).optional().describe('Optional material override; defaults to the product material.'),
+  "region": zod.string().min(1).optional().describe('Optional region override; defaults to the product region.')
+})
+
+export const createPricingRecommendationResponseMarketReferenceCountMin = 0;
+
+
+
+export const CreatePricingRecommendationResponse = zod.object({
+  "id": zod.string(),
+  "productId": zod.string(),
+  "minimumPrice": zod.number(),
+  "recommendedPrice": zod.number(),
+  "maximumPrice": zod.number(),
+  "confidence": zod.enum(['low', 'medium', 'high']),
+  "reasoning": zod.string(),
+  "marketReferenceCount": zod.number().int().min(createPricingRecommendationResponseMarketReferenceCountMin)
+})
+
+
+/**
  * @summary Get deterministic demo overview
  */
 export const GetDemoOverviewResponse = zod.object({
