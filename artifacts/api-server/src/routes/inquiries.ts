@@ -27,7 +27,6 @@ router.post("/inquiries", async (req: Request, res: Response) => {
 
   const inquiryId = randomUUID();
 
-  // 🔧 FORCE expectedDeliveryDate to null (ignore what's sent)
   const inquiry = {
     id: inquiryId,
     productId: productId,
@@ -36,19 +35,19 @@ router.post("/inquiries", async (req: Request, res: Response) => {
     company: company || null,
     quantity: parseInt(quantity, 10),
     message: message,
-    expectedDeliveryDate: null, // ✅ ALWAYS null
-    status: "pending",
+    expectedDeliveryDate: typeof expectedDeliveryDate === "string" && expectedDeliveryDate.trim() !== ""
+      ? expectedDeliveryDate
+      : null,
+    status: "new",
     createdAt: new Date(),
     updatedAt: new Date(),
   };
-
-  console.log("🔍 INQUIRY DATA:", JSON.stringify(inquiry, null, 2)); // DEBUG
 
   const messageRecord = {
     id: randomUUID(),
     inquiryId: inquiryId,
     senderProfileId: buyerProfileId,
-    content: message,
+    message: message,
     createdAt: new Date(),
   };
 
